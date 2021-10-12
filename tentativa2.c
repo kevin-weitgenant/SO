@@ -4,9 +4,9 @@
 #include <unistd.h>
 #include <time.h>
 
-const int LIMITE = 100;
+const int LIMITE = 30;
 
-int cadeiras_ocup = 20;
+int cadeiras_ocup = 0;
 int descansando =0;
 int tempo_atendimento;
 
@@ -15,6 +15,7 @@ pthread_mutex_t descansando_mtx = PTHREAD_MUTEX_INITIALIZER;
 
 pthread_cond_t cond;
 
+int entrada_clientes;
 
 
 
@@ -24,13 +25,16 @@ void *entra_cliente(){
         if (descansando == 0){
             //printf("\t\t\tantes de dar lock 1loop1!\n");
             pthread_mutex_lock(&cadeiras_mtx);
-            cadeiras_ocup+= 1;
+            entrada_clientes = rand()%4 ;
+            cadeiras_ocup+= entrada_clientes;
             
             if(cadeiras_ocup > LIMITE){
                 printf("Mais clientes do que o permitido. Cliente teve que se retirar!\n");
-                cadeiras_ocup--;
+                cadeiras_ocup-= entrada_clientes;
             }
-            printf("Clientes na fila no momento = %d\n",cadeiras_ocup);
+            if(entrada_clientes >= 0){
+            printf("Entraram %d clientes.\nClientes na fila no momento = %d\n",entrada_clientes,cadeiras_ocup);
+            }
             pthread_mutex_unlock(&cadeiras_mtx);
             sleep(1);
             //printf("\t\t\tUNLOCK 1LOOP1\n");
