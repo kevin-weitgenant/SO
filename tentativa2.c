@@ -40,7 +40,7 @@ void *entra_cliente(){
             
             if(cadeiras_ocup > LIMITE){
                 
-                printf("Mais clientes do que o permitido. %d Clientes tiveram que se retirar!\n", cadeiras_ocup - LIMITE);
+                printf("Mais clientes do que o permitido. Dos %d Clientes que entraram, %d tiveram que se retirar!\n", entrada_clientes,cadeiras_ocup - LIMITE);
                 nao_atendidos += cadeiras_ocup - LIMITE;
                 cadeiras_ocup = LIMITE;
                 pthread_mutex_unlock(&cadeiras_mtx);
@@ -125,10 +125,11 @@ void *gerente(){
             
 
             else{
+                printf("Gerente começa o atendimento de um cliente\n");
                 pthread_mutex_unlock(&descansando_mtx);
                 pthread_mutex_unlock(&cadeiras_mtx);               
                 //sleep(tempo_atendimento); 
-                sleep(1); 
+                sleep(10); 
                 printf("Gerente atendeu mais um cliente! Tempo empregado:%d\tRestam: %d\n",tempo_atendimento,cadeiras_ocup);
             }
 
