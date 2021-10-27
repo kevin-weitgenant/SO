@@ -1,0 +1,13 @@
+-Terminar o funcionamento depois de um numero X de clientes entrarem. Dizer qtos foram atendidos e qtos nao foram
+
+
+- Acrescentar mensagem dizendo do começo do atendimento do gerente, pra ficar evidente a entrada de clientes durante o atendimento. 
+
+
+
+- Controlar os sleeps de forma a forçar escassez e superlotação
+
+
+- Verificar pq quado entram 0 clientes crasha
+
+- Verificar se realmente só esta decrementando na segundo atendimento do gerente
