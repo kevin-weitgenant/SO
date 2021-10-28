@@ -10,3 +10,12 @@
 
 
 - O gerente quando vai tomar café, nao pode gastar mais recursos, ou seja nao pode cair dnv naquele loop, tem que colocar variaveis de condição que eu comentei no código. ->>>>>>>>>> (Fazer isso no final, qdo tudo já estiver dando certo)
+
+
+
+
+
+Felipe
+-codigo trava quando entra 1 cliente
+-loop infinito quando o gerente atende o ultimo cliente]
+-na primeira passada sempre entra 2 clientes

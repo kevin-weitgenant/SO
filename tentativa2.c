@@ -5,8 +5,8 @@
 #include <time.h>
 #include <stdbool.h>
 
-#define LIMITE 30
-#define CLIENTES_DIA 500
+#define LIMITE 5
+#define CLIENTES_DIA 10
 
 
 
@@ -14,6 +14,7 @@ int cadeiras_ocup = 0;
 bool descansando = false;
 int tempo_atendimento;
 int nao_atendidos = 0;
+int catraca = CLIENTES_DIA;
 
 pthread_mutex_t cadeiras_mtx = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t descansando_mtx = PTHREAD_MUTEX_INITIALIZER;
@@ -25,20 +26,22 @@ int entrada_clientes;
 
 
 void *entra_cliente(){
-    while(1){
+    while(catraca > 0){
         
         pthread_mutex_lock(&cadeiras_mtx);
         pthread_mutex_lock(&descansando_mtx);
 
-
-        if (descansando == false){
+        //printf("catraca: %d", catraca);
+        if (descansando == false){ //se o gerentee estiver trabalhando
             pthread_mutex_unlock(&descansando_mtx);   // já usou na checagem do if, pode dar unlock   
             
             entrada_clientes = rand()%2+1;
+            catraca -= entrada_clientes;
             
             cadeiras_ocup+= entrada_clientes;
+            catraca = (entrada_clientes)-(cadeiras_ocup - LIMITE);
             
-            if(cadeiras_ocup > LIMITE){
+            if(cadeiras_ocup > LIMITE){ // limite de clientes
                 
                 printf("Mais clientes do que o permitido. Dos %d Clientes que entraram, %d tiveram que se retirar!\n", entrada_clientes,cadeiras_ocup - LIMITE);
                 nao_atendidos += cadeiras_ocup - LIMITE;
@@ -46,18 +49,26 @@ void *entra_cliente(){
                 pthread_mutex_unlock(&cadeiras_mtx);
                 sleep(1);
             }
-            else if(entrada_clientes >= 0){
+            else if(entrada_clientes >= 0){ // enquanto tiver cliente
             printf("Entraram %d clientes.\nClientes na fila no momento = %d\n",entrada_clientes,cadeiras_ocup);
             pthread_mutex_unlock(&cadeiras_mtx);
             sleep(1);
 
-            }
+            }else if(descansando == true){            
+            printf("Cliente interrompe descanso do gerente e vai para fila\t %d\n",cadeiras_ocup);
+            descansando = false;
+            
+            //pthread_cond_signal(&cond_cafe);
+            pthread_mutex_unlock(&descansando_mtx);
+            pthread_mutex_unlock(&cadeiras_mtx);
+            sleep(1);
+        }
             
             
             
         }
 
-        else if (descansando){
+       /* else if (descansando){
         
             cadeiras_ocup= 1;
             printf("Cliente interrompe descanso do gerente e vai para fila\t %d\n",cadeiras_ocup);
@@ -68,7 +79,7 @@ void *entra_cliente(){
             pthread_mutex_unlock(&cadeiras_mtx);
             sleep(1);
 
-        }
+        }*/
 
     
 
