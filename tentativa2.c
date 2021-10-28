@@ -102,36 +102,37 @@ void *gerente(){
         else if (cadeiras_ocup > 0 ){
             
 
-            cadeiras_ocup-= 1;
+            
             tempo_atendimento = rand()%8 +5 ;
 
+            printf("Gerente começa o atendimento de um cliente\n");
+            pthread_mutex_unlock(&descansando_mtx);
+            pthread_mutex_unlock(&cadeiras_mtx);
+            //sleep(tempo_atendimento);   
+            
+            sleep(10);
+            pthread_mutex_lock(&cadeiras_mtx);               //usar 1 ou dois mutex aqui?
+            pthread_mutex_lock(&descansando_mtx);
+            printf("print SANIDADE %d",cadeiras_ocup);
+            cadeiras_ocup-= 1;  
+            pthread_mutex_unlock(&descansando_mtx);
+            printf("Gerente atendeu mais um cliente! Tempo empregado:%d\tRestam: %d\n",tempo_atendimento,cadeiras_ocup);
+            pthread_mutex_unlock(&cadeiras_mtx);              
+            
+            
+            pthread_mutex_lock(&descansando_mtx);
+            pthread_mutex_lock(&cadeiras_mtx);
+            
 
             if( cadeiras_ocup==0){
                 descansando = true;
-                
-            }
-
-            if(descansando){
-                
+                printf("Ninguém mais na fila, gerente vai tomar um cafézinho\t\n");
                 pthread_mutex_unlock(&descansando_mtx);
                 pthread_mutex_unlock(&cadeiras_mtx);
-                //sleep(tempo_atendimento);   
-                sleep(1);                
-                printf("Gerente atendeu mais um cliente! Tempo empregado:%d\tRestam: %d\n",tempo_atendimento,cadeiras_ocup);
-                printf("Ninguém mais na fila, gerente vai tomar um cafézinho\t\n");
             }
-
-
+            pthread_mutex_unlock(&descansando_mtx);
+            pthread_mutex_unlock(&cadeiras_mtx);
             
-
-            else{
-                printf("Gerente começa o atendimento de um cliente\n");
-                pthread_mutex_unlock(&descansando_mtx);
-                pthread_mutex_unlock(&cadeiras_mtx);               
-                //sleep(tempo_atendimento); 
-                sleep(10); 
-                printf("Gerente atendeu mais um cliente! Tempo empregado:%d\tRestam: %d\n",tempo_atendimento,cadeiras_ocup);
-            }
 
                   
         }
