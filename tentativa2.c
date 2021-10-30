@@ -18,7 +18,7 @@ int nao_atendidos = 0;
 pthread_mutex_t cadeiras_mtx = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t descansando_mtx = PTHREAD_MUTEX_INITIALIZER;
 
-//pthread_cond_t cond_cafe;
+pthread_cond_t cond_cafe;
 
 int entrada_clientes;
 
@@ -47,9 +47,9 @@ void *entra_cliente(){
                 sleep(1);
             }
             else if(entrada_clientes >= 0){
-            printf("Entraram %d clientes.\nClientes na fila no momento = %d\n",entrada_clientes,cadeiras_ocup);
+            printf("Entraram %d clientes.\nClientes no estabelecimento no momento = %d\n",entrada_clientes,cadeiras_ocup);
             pthread_mutex_unlock(&cadeiras_mtx);
-            sleep(1);
+            sleep(10);
 
             }
             
@@ -60,12 +60,11 @@ void *entra_cliente(){
         else if (descansando){
         
             cadeiras_ocup= 1;
-            printf("Cliente interrompe descanso do gerente e vai para fila\t %d\n",cadeiras_ocup);
+            printf("Cliente interrompe descanso do gerente e vai para fila\t \n");
             descansando = false;
-            
-            //pthread_cond_signal(&cond_cafe);
             pthread_mutex_unlock(&descansando_mtx);
             pthread_mutex_unlock(&cadeiras_mtx);
+            pthread_cond_signal(&cond_cafe);
             sleep(1);
 
         }
@@ -85,21 +84,17 @@ void *gerente(){
         pthread_mutex_lock(&cadeiras_mtx);
         pthread_mutex_lock(&descansando_mtx);
 
-
-        if(descansando){
-            printf("Gerente continua tomando seu cafézinho na tranquilidade!\n");
-            pthread_mutex_unlock(&descansando_mtx);
-            pthread_mutex_unlock(&cadeiras_mtx);
-        }
-        
-        /*
+                
         while(descansando){
             printf("Gerente continua tomando seu cafézinho na tranquilidade!\n");
+            pthread_mutex_unlock(&cadeiras_mtx);
+            pthread_mutex_unlock(&descansando_mtx); 
             pthread_cond_wait(&cond_cafe, &descansando_mtx);
-        } */
+           
+        } 
         
         
-        else if (cadeiras_ocup > 0 ){
+        if (cadeiras_ocup > 0 ){
             
 
             
@@ -110,10 +105,9 @@ void *gerente(){
             pthread_mutex_unlock(&cadeiras_mtx);
             //sleep(tempo_atendimento);   
             
-            sleep(10);
+            sleep(1);
             pthread_mutex_lock(&cadeiras_mtx);               //usar 1 ou dois mutex aqui?
             pthread_mutex_lock(&descansando_mtx);
-            printf("print SANIDADE %d",cadeiras_ocup);
             cadeiras_ocup-= 1;  
             pthread_mutex_unlock(&descansando_mtx);
             printf("Gerente atendeu mais um cliente! Tempo empregado:%d\tRestam: %d\n",tempo_atendimento,cadeiras_ocup);
@@ -130,8 +124,11 @@ void *gerente(){
                 pthread_mutex_unlock(&descansando_mtx);
                 pthread_mutex_unlock(&cadeiras_mtx);
             }
+            else{
             pthread_mutex_unlock(&descansando_mtx);
             pthread_mutex_unlock(&cadeiras_mtx);
+            }
+
             
 
                   
@@ -151,7 +148,7 @@ int main(){
     pthread_mutex_init(&cadeiras_mtx, NULL);
     pthread_mutex_init(&descansando_mtx, NULL);
 
-    //pthread_cond_init(&cond_cafe, NULL);
+    pthread_cond_init(&cond_cafe, NULL);
 
     pthread_create(&t_entra_cliente, NULL, &entra_cliente, NULL);
     pthread_create(&t_gerente, NULL, &gerente, NULL);
@@ -163,7 +160,7 @@ int main(){
 
     pthread_mutex_destroy(&cadeiras_mtx);
     pthread_mutex_destroy(&descansando_mtx);
-    //pthread_cond_destroy(&cond_cafe);
+    pthread_cond_destroy(&cond_cafe);
     return 0;
     
 }
