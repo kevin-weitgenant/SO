@@ -14,6 +14,22 @@ A Fim de conhecer mais  sobre Thread foi definido um trabalho na disciplina de S
 -Se a entrada de clientes for maior do que a ocupação do local, o mesmo deve se retirar do estabelecimento.
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 **Foram utilizados 2 threads, 2 mutex e uma variável condicional para a resolução do problema.**
 
 
