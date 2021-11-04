@@ -1,7 +1,7 @@
 # SO
 
 
-A Fim de conhecer mais  sobre Thread foi definido um trabalho na disciplina de Sistemas Operacionais que consiste utilizar Programação Concorrente para simular o atendimento de um gerente de banco, considerando as seguintes características:
+Como exercício prático de Threads foi definido um trabalho na disciplina de Sistemas Operacionais que consiste em utilizar Programação Concorrente para simular o atendimento de um gerente de um banco, considerando as seguintes características:
 
 -O local deve apenas permitir a permanência de 3 clientes por vez para obter o atendimento do gerente.
 
