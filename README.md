@@ -1,7 +1,8 @@
 # SO
 
 
-	A Fim de conhecer mais  sobre Thread foi definido um trabalho na disciplina de Sistemas Operacionais que consiste utilizar Programação Concorrente para simular o atendimento de um gerente de banco, considerando as seguintes características:
+A Fim de conhecer mais  sobre Thread foi definido um trabalho na disciplina de Sistemas Operacionais que consiste utilizar Programação Concorrente para simular o atendimento de um gerente de banco, considerando as seguintes características:
+
 -O local deve apenas permitir a permanência de 3 clientes por vez para obter o atendimento do gerente.
 -O Gerente não deve consumir recursos enquanto não há clientes aguardando no local.
 -O Gerente deve voltar a consumir recursos quando um novo cliente chegar no local.
