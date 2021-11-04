@@ -12,24 +12,7 @@ A Fim de conhecer mais  sobre Thread foi definido um trabalho na disciplina de S
 -O tempo de atendimento para cada cliente deve ser algo entre 5 a 12 segundos.
 
 -Se a entrada de clientes for maior do que a ocupação do local, o mesmo deve se retirar do estabelecimento.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+______________________________________________________________________________________________________________________________________
 **Foram utilizados 2 threads, 2 mutex e uma variável condicional para a resolução do problema.**
 
 
